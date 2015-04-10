@@ -1,0 +1,47 @@
+
+ui.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonDown
+  rotate: false
+  xy: 1, 1
+  size: 250, 100
+  orig: 250, 100
+  offset: 0, 0
+  index: -1
+buttonUp
+  rotate: false
+  xy: 253, 1
+  size: 250, 100
+  orig: 250, 100
+  offset: 0, 0
+  index: -1
+progressBarBackground
+  rotate: false
+  xy: 505, 76
+  size: 300, 25
+  orig: 300, 25
+  offset: 0, 0
+  index: -1
+progressBarForeground
+  rotate: false
+  xy: 505, 49
+  size: 300, 25
+  orig: 300, 25
+  offset: 0, 0
+  index: -1
+sliderBackground
+  rotate: false
+  xy: 505, 22
+  size: 300, 25
+  orig: 300, 25
+  offset: 0, 0
+  index: -1
+sliderKnob
+  rotate: false
+  xy: 807, 66
+  size: 25, 35
+  orig: 25, 35
+  offset: 0, 0
+  index: -1
