@@ -1,8 +1,11 @@
 package evasion.game;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import evasion.game.HUD.AmmunitionDisplay;
+import evasion.game.HUD.StaticAnimation;
 import evasion.game.objects.Asteroid;
 import evasion.game.objects.Drop;
 import evasion.game.objects.Laser;
@@ -35,6 +38,9 @@ public class GameWorld {
 
     //HUD
     private AmmunitionDisplay ammunitionDisplay;
+    private Font moneyDisplay;
+    private int moneySupply;
+    private StaticAnimation moneyIcon;
 
     //Lasers
     private ArrayList<Laser> lasers;
@@ -56,7 +62,7 @@ public class GameWorld {
         collidables = new ArrayList<Collidable>();
 
         //background
-        background = new Background(game, "images/background/background.png", new Vector2(0,0), new Vector2(0, -20));
+        background = new Background(game, "images/background/background.png", new Vector2(0,0), new  Vector2(0, -20));
         drawables.add(background);
 
         //random
@@ -70,6 +76,11 @@ public class GameWorld {
         //HUD
         ammunitionDisplay = new AmmunitionDisplay(game);
         drawables.add(ammunitionDisplay);
+        moneySupply = 0;
+        moneyDisplay = new Font(game, new Vector2(Constants.MONEY_DISPLAY_X, Constants.MONEY_DISPLAY_Y), String.valueOf(moneySupply), .75f, Color.YELLOW, DrawLevel.HUD);
+        drawables.add(moneyDisplay);
+        moneyIcon = new StaticAnimation(game, new Vector2(Constants.MONEY_ICON_X, Constants.MONEY_ICON_Y), "images/drops/coins.pack", "coin", Constants.MONEY_SCALE, Animation.PlayMode.LOOP_PINGPONG);
+        drawables.add(moneyIcon);
 
         //timer
         spawnTimer = new SpawnTimer(difficulty.getGlobalSpawnModifier());
@@ -113,6 +124,9 @@ public class GameWorld {
     public void update(float delta) {
         //spawn stuff
         spawn(delta);
+
+        //update money display
+        moneyDisplay.setData(String.valueOf(moneySupply));
 
         for (GameDrawable drawable: drawables) {
             drawable.update(delta);
@@ -202,6 +216,7 @@ public class GameWorld {
         for (int i=0; i<drops.size(); i++) {
             Drop item = drops.get(i);
             if (!item.isLiving()) {
+                if (item.AddMoney()) addMoney(); //checks to see if the game adds to the money supply.
                 drops.remove(i);
                 removeItemFromDrawables(item);
                 removeItemFromCollidables(item);
@@ -210,7 +225,7 @@ public class GameWorld {
         }
     }
 
-    public void removeItemFromCollidables(GameDrawable item) {
+    public void removeItemFromCollidables(Collidable item) {
         for (int i=0; i<collidables.size(); i++) {
             if (collidables.get(i).equals(item)) {
                 collidables.remove(i);
@@ -267,5 +282,9 @@ public class GameWorld {
             drops.add(item);
             drawables.add(item);
         }
+    }
+
+    public void addMoney() {
+        moneySupply ++;
     }
 }

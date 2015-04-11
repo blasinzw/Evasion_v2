@@ -5,7 +5,7 @@ package evasion.game;
  */
 public class Constants {
     //magic numbers go here
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.3.1";
 
     public static final String NAME = "EVASION -v" + VERSION;
 
@@ -15,6 +15,10 @@ public class Constants {
     //for HUD
     public static final int ENERGY_METER_X = VIRTUAL_WIDTH - 240;//560;
     public static final int ENERGY_METER_Y = VIRTUAL_HEIGHT - 50;//430;
+    public static final int MONEY_DISPLAY_X = 50;
+    public static final int MONEY_DISPLAY_Y = VIRTUAL_HEIGHT - 25;
+    public static final int MONEY_ICON_X = MONEY_DISPLAY_X - 20;
+    public static final int MONEY_ICON_Y = MONEY_DISPLAY_Y - 15;
 
     //for laser
     public static final float LASER_RATE_OF_FIRE = 0.2f;

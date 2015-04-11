@@ -1,6 +1,7 @@
 package evasion.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
@@ -26,11 +27,11 @@ public class Drop extends GameObject implements Pool.Poolable {
     private TextureRegion currentFrame;
     private Sprite image;
 
-    private boolean addedToCollidables = false; //fixes java.util.ConcurrentModificationException
+    private boolean addedToCollidables; //fixes java.util.ConcurrentModificationException
 
     private Rectangle bounds;
 
-    private boolean flip;
+    private boolean flip, addMoney;
 
     private float stateTime;
 
@@ -43,7 +44,9 @@ public class Drop extends GameObject implements Pool.Poolable {
         this.position = position;
         velocity = new Vector2(0, speed);
         this.dropType = dropType;
+        setAddedToCollidables(false);
         setLiving(true);
+        addMoney = false;
         load();
     }
 
@@ -73,7 +76,23 @@ public class Drop extends GameObject implements Pool.Poolable {
 
     @Override
     public void collideWith(Collidable collidable) {
-        setLiving(false);
+        if (Intersector.overlaps(collidable.getBounds(), bounds)) {
+            switch (collidable.getCollisionType()) {
+                case PLAYER:
+                    if (dropType == DropType.MONEY) addMoney = true;
+                    collide();
+                    break;
+                case ASTEROID:
+                    collidable.collide();
+                    break;
+                case MINE:
+                    break;
+                case DROP:
+                    break;
+                case LASER:
+                    break;
+            }
+        }
     }
 
     @Override
@@ -149,4 +168,9 @@ public class Drop extends GameObject implements Pool.Poolable {
     public void setAddedToCollidables(boolean addedToCollidables) {
         this.addedToCollidables = addedToCollidables;
     }
+
+    public boolean AddMoney() {
+        return addMoney;
+    }
+
 }

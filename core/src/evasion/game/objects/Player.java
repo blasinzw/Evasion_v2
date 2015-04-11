@@ -137,7 +137,6 @@ public class Player extends GameObject{
                 case MINE:
                     break;
                 case DROP:
-                    collidable.collide();
                     break;
                 case LASER:
                     break;

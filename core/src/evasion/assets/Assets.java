@@ -20,5 +20,6 @@ public class Assets {
         manager.load("images/background/background.png", Texture.class);
         manager.load("images/player/laser.png", Texture.class);
         manager.load("images/hud/laserBar.png", Texture.class);
+        manager.load("images/ui/font.png", Texture.class);
     }
 }
