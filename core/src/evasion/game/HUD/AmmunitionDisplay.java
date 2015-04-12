@@ -23,7 +23,7 @@ public class AmmunitionDisplay extends GameDrawable {
     private final int X_0 = Constants.ENERGY_METER_X;
     private final int DELTA_X = 10;
 
-    private final float RESPAWN_TIME = 2.5f; //in seconds
+    private final float RESPAWN_TIME = 1.5f; //in seconds
 
     private float internalTime = 0.0f;
 

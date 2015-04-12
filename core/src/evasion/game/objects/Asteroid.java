@@ -20,7 +20,7 @@ public class Asteroid extends GameObject implements Pool.Poolable{
 
     private int speed;
 
-    private boolean exploding, isDrop;
+    private boolean exploding;
 
     //images
     private int frame;
@@ -34,7 +34,7 @@ public class Asteroid extends GameObject implements Pool.Poolable{
 
     //bounds
     private Sprite image;
-    private Rectangle bounds; //maybe rectangle?
+    private Rectangle bounds;
 
     //randomization code
     private Random rand = new Random();
@@ -61,7 +61,6 @@ public class Asteroid extends GameObject implements Pool.Poolable{
         bounds = image.getBoundingRectangle();
 
         exploding = false;
-        isDrop = rand.nextBoolean();
         stateTime = 0;
     }
 
@@ -75,7 +74,6 @@ public class Asteroid extends GameObject implements Pool.Poolable{
         velocity.set(0, speed);
         setLiving(true);
         exploding = false;
-        isDrop = rand.nextBoolean();
         stateTime = 0;
         explosionAnimation = new Animation(0.03f, explosionTextures);
     }

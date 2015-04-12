@@ -9,8 +9,12 @@ public class Constants {
 
     public static final String NAME = "EVASION -v" + VERSION;
 
-    public static final int VIRTUAL_WIDTH = 480; //800;
-    public static final int VIRTUAL_HEIGHT = 800; //480;
+//    public static final int VIRTUAL_WIDTH = 480; //800 or 480
+//    public static final int VIRTUAL_HEIGHT = 800; //480 or 800
+
+    //Beta higher resolution
+    public static final int VIRTUAL_WIDTH = 800; //800 or 480
+    public static final int VIRTUAL_HEIGHT = 960; //480 or 800
 
     //for HUD
     public static final int ENERGY_METER_X = VIRTUAL_WIDTH - 240;//560;
@@ -28,10 +32,20 @@ public class Constants {
     public static final float LASER_B_X_OFFSET = 42.5f;
     public static final int LASER_SPEED = 1750;
     public static final int LASER_RESIZE = 3;
-    public static final int MAX_ROUNDS = 15;
+    public static final int MAX_ROUNDS = 20;
 
     //for player
-    public static final float PLAYER_SPEED = 600.0f;
+    public static final float PLAYER_SPEED = 800.0f;
+    public static final int PLAYER_X = VIRTUAL_WIDTH/2 - 25;
+    public static final int PLAYER_Y = 50;
+
+    //for mine
+    public static final int EXPLOSION_SPEED = 450;
+    public static final float MINE_SCALE = 1.5f;
+    public static final float MINE_EXPLOSION_SCALE = 1.125f;
+
+    //for menu
+    public static final int MENU_X_OFFSET = 0;
 
     //drops
     public static final float DROP_PERCENTAGE = 0.70f;
@@ -41,6 +55,6 @@ public class Constants {
     public static final int THRESHOLD_HIGH_YIELD = 20;
     public static final float LOW__YIELD_PERCENTAGE = 0.60f;
     public static final float MEDIUM_YIELD_PERCENTAGE = 0.30f;
-    public static final float HIGH_YIELD_PERCENTAGE = 0.10f;
+//    public static final float HIGH_YIELD_PERCENTAGE = 0.10f;
 
 }

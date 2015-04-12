@@ -1,15 +1,14 @@
 package evasion.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import evasion.game.HUD.AmmunitionDisplay;
 import evasion.game.HUD.StaticAnimation;
-import evasion.game.objects.Asteroid;
-import evasion.game.objects.Drop;
-import evasion.game.objects.Laser;
-import evasion.game.objects.Player;
+import evasion.game.objects.*;
 import evasion.screens.Background;
 import evasion.utils.*;
 
@@ -32,6 +31,13 @@ public class GameWorld {
     private Pool<Asteroid> asteroidPool;
     private int maxAsteroids;
 
+    //Mines
+    private ArrayList<Mine> mines;
+    private Pool<Mine> minePool;
+    private int maxMines;
+    private ArrayList<MineExplosion> mineExplosions;
+    private Pool<MineExplosion> mineExplosionPool;
+
     //Drops
     private ArrayList<Drop> drops;
     private Pool<Drop> dropPool;
@@ -52,6 +58,9 @@ public class GameWorld {
     private float globalSpawnModifier;
     private int globalSpeed;
 
+    //save data
+    private Preferences saveData = Gdx.app.getPreferences("saveData");
+
     //spawn timer
     private SpawnTimer spawnTimer;
 
@@ -69,7 +78,7 @@ public class GameWorld {
         random = new Random();
 
         //difficulty
-        difficulty = Difficulty.NORMAL;
+        difficulty = Difficulty.valueOf(saveData.getString("difficulty", "NORMAL"));
         globalSpawnModifier = difficulty.getGlobalSpawnModifier();
         globalSpeed = difficulty.getGlobalSpeed();
 
@@ -99,7 +108,6 @@ public class GameWorld {
         };
         isFiring = false;
 
-
         //Asteroids
         asteroids = new ArrayList<Asteroid>();
         final GameWorld world = this; //awful find more elegant solution
@@ -110,6 +118,23 @@ public class GameWorld {
             }
         };
         maxAsteroids = difficulty.getMaxAsteroids();
+
+        //Mines
+        mines = new ArrayList<Mine>();
+        minePool = new Pool<Mine>() {
+            @Override
+            protected Mine newObject() {
+                return new Mine(game, globalSpeed, difficulty.getMineDetectionRadius(), difficulty.getMinePrimeDuration());
+            }
+        };
+        mineExplosions = new ArrayList<MineExplosion>();
+        mineExplosionPool = new Pool<MineExplosion>() {
+            @Override
+            protected MineExplosion newObject() {
+                return new MineExplosion(game, difficulty.getMineExplosionDuration());
+            }
+        };
+        maxMines = difficulty.getMaxMines();
 
         //Drops
         drops = new ArrayList<Drop>();
@@ -158,6 +183,30 @@ public class GameWorld {
                 collidables.add(item);
                 spawnTimer.setAsteroidTimer(0);
 
+        }
+
+        if (mines.size() < maxMines && spawnTimer.canSpawnMine()) {
+            Mine item = minePool.obtain();
+            item.init();
+            mines.add(item);
+            drawables.add(item);
+            collidables.add(item);
+            spawnTimer.setMineTimer(0);
+        }
+
+        for (Mine each: mines) {
+            if (each.isExploding() && each.isLiving()) {
+                float theta = 0;
+                for (int i=0; i<8; i++) {
+                    MineExplosion item = mineExplosionPool.obtain();
+                    item.init(each.getPosition().cpy(), each.getVelocity().cpy().add(new Vector2(0, -Constants.EXPLOSION_SPEED).rotate(theta)));
+                    mineExplosions.add(item);
+                    drawables.add(item);
+                    collidables.add(item);
+                    each.setLiving(false);
+                    theta += 45;
+                }
+            }
         }
 
         spawnLaser();
@@ -221,6 +270,26 @@ public class GameWorld {
                 removeItemFromDrawables(item);
                 removeItemFromCollidables(item);
                 dropPool.free(item);
+            }
+        }
+
+        for (int i=0; i<mines.size(); i++) {
+            Mine item = mines.get(i);
+            if (!item.isLiving()) {
+                mines.remove(item);
+                removeItemFromDrawables(item);
+                removeItemFromCollidables(item);
+                minePool.free(item);
+            }
+        }
+
+        for (int i=0; i<mineExplosions.size(); i++) {
+            MineExplosion item = mineExplosions.get(i);
+            if (!item.isLiving()) {
+                mineExplosions.remove(item);
+                removeItemFromDrawables(item);
+                removeItemFromCollidables(item);
+                mineExplosionPool.free(item);
             }
         }
     }

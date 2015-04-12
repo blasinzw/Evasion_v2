@@ -15,9 +15,7 @@ import evasion.utils.DrawLevel;
 
 public class Player extends GameObject{
 
-    private Vector2 velocity;
     private float speed = Constants.PLAYER_SPEED;
-    private Vector2 position;
 
     private boolean movingLeft, movingRight;
 
@@ -33,10 +31,7 @@ public class Player extends GameObject{
     private Animation animation;
 
     public Player(final Evasion game) {
-        super(new Vector2(375, 50), new Vector2(0,0), DrawLevel.OBJECTS, game);
-
-        position = new Vector2(375, 50);
-        velocity = new Vector2(0, 0);
+        super(new Vector2(Constants.PLAYER_X, Constants.PLAYER_Y), new Vector2(0,0), DrawLevel.OBJECTS, game);
 
         movingLeft = movingRight = false;
 

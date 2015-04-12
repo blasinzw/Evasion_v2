@@ -20,18 +20,18 @@ public class SpawnTimer {
 
     private float globalSpawnModifier;
 
-    private boolean spawnAsteroid, spawnLaser;
+    private boolean spawnAsteroid, spawnLaser, spawnMine;
 
     private Random random = new Random();
 
     public SpawnTimer(float globalSpawnModifier) {
         this.globalSpawnModifier = globalSpawnModifier;
 
-        spawnAsteroid = spawnLaser = false;
+        spawnAsteroid = spawnLaser = spawnMine = false;
     }
 
     public void update(float delta) {
-        spawnAsteroid = spawnLaser = false;
+        spawnAsteroid = spawnLaser = spawnMine = false;
 
         asteroidTime += delta;
         laserTime += delta;
@@ -40,6 +40,11 @@ public class SpawnTimer {
         if (asteroidTime > asteroidSpawnDelay) {
             spawnAsteroid = true;
             asteroidSpawnDelay = random.nextFloat() * globalSpawnModifier;
+        }
+
+        if (mineTime > mineSpawnDelay) {
+            spawnMine = true;
+            mineSpawnDelay = random.nextFloat() * globalSpawnModifier;
         }
 
         if (laserTime > laserSpawnDelay) {
@@ -62,5 +67,13 @@ public class SpawnTimer {
 
     public void setLaserTimer(float laserTime) {
         this.laserTime = laserTime;
+    }
+
+    public boolean canSpawnMine() {
+        return spawnMine;
+    }
+
+    public void setMineTimer(float mineTime) {
+        this.mineTime = mineTime;
     }
 }

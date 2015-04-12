@@ -1,0 +1,26 @@
+
+mine.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+mineDefault
+  rotate: false
+  xy: 0, 0
+  size: 17, 17
+  orig: 17, 17
+  offset: 0, 0
+  index: -1
+minePrimed
+  rotate: false
+  xy: 19, 0
+  size: 17, 17
+  orig: 17, 17
+  offset: 0, 0
+  index: -1
+explosion
+  rotate: false
+  xy: 38, 4
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1

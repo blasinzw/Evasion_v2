@@ -43,4 +43,12 @@ public abstract class GameObject extends GameDrawable implements Collidable{
     public void setLiving(boolean living) {
         this.living = living;
     }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
+    }
 }
