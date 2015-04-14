@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.Random;
 
 public class GameWorld {
+
+    private final Evasion game;
     private Random random;
 
     //background
@@ -47,6 +49,8 @@ public class GameWorld {
     private Font moneyDisplay;
     private int moneySupply;
     private StaticAnimation moneyIcon;
+    private Font timerDisplay;
+    private float time;
 
     //Lasers
     private ArrayList<Laser> lasers;
@@ -67,6 +71,8 @@ public class GameWorld {
     private Player player;
 
     public GameWorld(final Evasion game) {
+        this.game = game;
+
         drawables = new ArrayList<GameDrawable>();
         collidables = new ArrayList<Collidable>();
 
@@ -90,6 +96,8 @@ public class GameWorld {
         drawables.add(moneyDisplay);
         moneyIcon = new StaticAnimation(game, new Vector2(Constants.MONEY_ICON_X, Constants.MONEY_ICON_Y), "images/drops/coins.pack", "coin", Constants.MONEY_SCALE, Animation.PlayMode.LOOP_PINGPONG);
         drawables.add(moneyIcon);
+        timerDisplay = new Font(game, new Vector2(Constants.TIMER_DISPLAY_X, Constants.TIMER_DISPLAY_Y), "0", 1f, Color.GREEN, DrawLevel.HUD);
+        drawables.add(timerDisplay);
 
         //timer
         spawnTimer = new SpawnTimer(difficulty.getGlobalSpawnModifier());
@@ -150,8 +158,10 @@ public class GameWorld {
         //spawn stuff
         spawn(delta);
 
-        //update money display
+        //update money display and timer display
         moneyDisplay.setData(String.valueOf(moneySupply));
+        time += delta;
+        timerDisplay.setData(String.format("%.0f", time));
 
         for (GameDrawable drawable: drawables) {
             drawable.update(delta);
@@ -160,6 +170,9 @@ public class GameWorld {
         collision();
 
         kill();
+
+        //checks if player is dead
+        if (!player.isLiving()) game.setScreen(game.getHighScoreScreen());
     }
 
     public void collision() {
@@ -355,5 +368,13 @@ public class GameWorld {
 
     public void addMoney() {
         moneySupply ++;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public int getMoneySupply() {
+        return moneySupply;
     }
 }

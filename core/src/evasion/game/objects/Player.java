@@ -146,7 +146,7 @@ public class Player extends GameObject{
 
     @Override
     public void collide() {
-
+        setLiving(false);
     }
 
     @Override

@@ -1,10 +1,6 @@
 package evasion.screens;
 
-import java.io.IOException;
-
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import evasion.assets.Assets;
 import evasion.game.Constants;
@@ -51,15 +46,15 @@ public class MainMenuScreen implements Screen{
     public Player player;
 
     private SpriteBatch batch;
-    public OrthographicCamera camera;
-    public Viewport viewport;
+    private OrthographicCamera camera;
+    private Viewport viewport;
 
     //skin and buttons
     private Skin skin;
     private float eventDelay;
     private Stage stage;
     private BitmapFont buttonFont;
-    public TextButtonStyle style;
+    private TextButtonStyle style;
     private TextButton play;
     private TextButton exit;
     private TextButton optionMenu;
@@ -92,11 +87,9 @@ public class MainMenuScreen implements Screen{
     private void init(Evasion game) {
         //Initializer code for stuff
         setGame(game);
-        camera = new OrthographicCamera();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Constants.VIRTUAL_WIDTH, Constants.VIRTUAL_HEIGHT);
-        viewport = new FitViewport(Constants.VIRTUAL_WIDTH, Constants.VIRTUAL_HEIGHT, camera);
-        batch = new SpriteBatch();
+        camera = game.getCamera();
+        viewport = game.getViewport();
+        batch = game.batch;
         assets = new Assets(game);
         font = new BitmapFont();
 
@@ -265,7 +258,7 @@ public class MainMenuScreen implements Screen{
             if (!isOptionMenu) {
                 optionMenu.setText("OPTIONS");
                 if (play.isPressed()) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(game.getGameScreen());
                 }else if (exit.isPressed()) {
                     Gdx.app.exit();
                 }else if (optionMenu.isChecked() && !optionMenu.isPressed()) {
@@ -344,12 +337,7 @@ public class MainMenuScreen implements Screen{
         font.dispose();
     }
 
-    public Difficulty getDifficulty() {
-        return difficulty;
+    public TextButtonStyle getStyle() {
+        return style;
     }
-
-    public float getSensitivity() {
-        return sensitivity;
-    }
-
 }

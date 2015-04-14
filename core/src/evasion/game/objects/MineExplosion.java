@@ -111,7 +111,6 @@ public class MineExplosion extends GameObject implements Pool.Poolable {
 
         if (durationTimer > duration) {
             setLiving(false);
-            System.out.println("ho");
         }
         durationTimer += delta;
 

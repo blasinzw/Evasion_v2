@@ -3,7 +3,7 @@ package evasion.utils;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
- * A Collidable knows how to collide with other collideable objects.
+ * A Collidable knows how to collide with other collidable objects.
  */
 public interface Collidable {
 

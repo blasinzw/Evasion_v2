@@ -25,19 +25,15 @@ public class GameScreen implements Screen {
     public GameScreen(final Evasion game) {
         this.game = game;
 
-        gameWorld = new GameWorld(game);
-        gameRenderer = new GameRenderer(game, gameWorld);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Constants.VIRTUAL_WIDTH, Constants.VIRTUAL_HEIGHT);
-        viewport = new FitViewport(Constants.VIRTUAL_WIDTH, Constants.VIRTUAL_HEIGHT, camera);
-
-        Gdx.input.setInputProcessor(new InputHandler(gameWorld));
+        camera = game.getCamera();
+        viewport = game.getViewport();
     }
 
     @Override
     public void show() {
-
+        gameWorld = new GameWorld(game);
+        gameRenderer = new GameRenderer(game, gameWorld);
+        Gdx.input.setInputProcessor(new InputHandler(gameWorld));
     }
 
     @Override
@@ -74,5 +70,9 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
     }
 }
