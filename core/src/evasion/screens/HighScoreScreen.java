@@ -1,16 +1,13 @@
 package evasion.screens;
 
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -21,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import evasion.game.Constants;
 import evasion.game.Evasion;
 import evasion.utils.Difficulty;
+import evasion.utils.TextureCropper;
 
 public class HighScoreScreen implements Screen{
 
@@ -145,19 +143,23 @@ public class HighScoreScreen implements Screen{
         batch.draw(empty, table.getCell(moneyLabel).getActorX() + table.getCell(moneyLabel).getActorWidth() + 25, table.getCell(moneyLabel).getActorY());
         batch.draw(empty, table.getCell(scoreLabel).getActorX() + table.getCell(scoreLabel).getActorWidth() + 25, table.getCell(scoreLabel).getActorY());
 
+
+//        System.out.println((int) ((time/bestTime) * 300));
         if (time < bestTime) {
 //            batch.draw(full, table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY(), 0, 0, (int) ((time/bestTime) * 300), 25);
-            batch.draw(full, table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY(), new Affine2().setToScaling(time/bestTime * 300, 1f));
+            batch.draw(TextureCropper.cropTexture(full, (int) (time/bestTime * 300), full.getRegionHeight()), table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY());
         }else{
             batch.draw(full, table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY());
         }
         if (money < mostMoney) {
 //            batch.draw(full, table.getCell(moneyLabel).getActorX() + table.getCell(moneyLabel).getActorWidth() + 25, table.getCell(moneyLabel).getActorY(), 0, 0, (int) ((money/mostMoney) * 300), 25);
+            batch.draw(TextureCropper.cropTexture(full, (int) (money/mostMoney * 300), full.getRegionHeight()), table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY());
         }else{
             batch.draw(full, table.getCell(moneyLabel).getActorX() + table.getCell(moneyLabel).getActorWidth() + 25, table.getCell(moneyLabel).getActorY());
         }
         if (score < oldScore) {
 //            batch.draw(full, table.getCell(scoreLabel).getActorX() + table.getCell(scoreLabel).getActorWidth() + 25, table.getCell(scoreLabel).getActorY(), 0, 0, (int) ((score/oldScore) * 300), 25);
+            batch.draw(TextureCropper.cropTexture(full, (int) (score/oldScore * 300), full.getRegionHeight()), table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY());
         }else{
             batch.draw(full, table.getCell(scoreLabel).getActorX() + table.getCell(scoreLabel).getActorWidth() + 25, table.getCell(scoreLabel).getActorY());
 
@@ -173,15 +175,6 @@ public class HighScoreScreen implements Screen{
         if (exit.isPressed()) {
             game.setScreen(game.getMainMenuScreen());
         }
-
-        if (Gdx.app.getType() == ApplicationType.Desktop) {
-            //fullscreen toggle
-            if ((Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT)) && Gdx.input.isKeyPressed(Keys.ENTER) && !Gdx.graphics.isFullscreen()) {
-                Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-            }else if ((Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT)) && Gdx.input.isKeyPressed(Keys.ENTER) && Gdx.graphics.isFullscreen()) {
-                Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-            }
-        }
     }
 
     private void writeSave() {
@@ -192,7 +185,7 @@ public class HighScoreScreen implements Screen{
             saveData.putFloat("time_for_"+difficulty.toString(), time);
         }
         if (money > mostMoney) {
-            saveData.putFloat("score_for_"+difficulty.toString(), money);
+            saveData.putFloat("money_for_"+difficulty.toString(), money);
         }
         saveData.flush();
     }
