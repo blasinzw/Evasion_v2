@@ -1,7 +1,5 @@
 package evasion.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
@@ -62,9 +60,6 @@ public class GameWorld {
     private float globalSpawnModifier;
     private int globalSpeed;
 
-    //save data
-    private Preferences saveData = Gdx.app.getPreferences("saveData");
-
     //spawn timer
     private SpawnTimer spawnTimer;
 
@@ -84,7 +79,7 @@ public class GameWorld {
         random = new Random();
 
         //difficulty
-        difficulty = Difficulty.valueOf(saveData.getString("difficulty", "NORMAL"));
+        difficulty = SaveData.getDifficulty();
         globalSpawnModifier = difficulty.getGlobalSpawnModifier();
         globalSpeed = difficulty.getGlobalSpeed();
 
@@ -172,7 +167,9 @@ public class GameWorld {
         kill();
 
         //checks if player is dead
-        if (!player.isLiving()) game.setScreen(game.getHighScoreScreen());
+        if (!player.isLiving()) {
+            game.setScreen(game.getHighScoreScreen());
+        }
     }
 
     public void collision() {

@@ -122,21 +122,6 @@ public class Player extends GameObject{
 
     @Override
     public void collideWith(Collidable collidable) {
-        if (Intersector.overlaps(collidable.getBounds(), bounds)) {
-            switch (collidable.getCollisionType()) {
-                case PLAYER:
-                    break;
-                case ASTEROID:
-                    collidable.collide();
-                    break;
-                case MINE:
-                    break;
-                case DROP:
-                    break;
-                case LASER:
-                    break;
-            }
-        }
     }
 
     @Override

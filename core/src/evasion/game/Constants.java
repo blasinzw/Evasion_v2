@@ -64,5 +64,10 @@ public class Constants {
     public static final float TIME_MULTIPLIER = 1f;
     public static final float MONEY_MULTIPLIER = 2f;
 
+    //for sound effects
+    public static final float LASER_VOLUME = 0.5f;
+    public static final float MINE_VOLUME = 0.25f;
+    public static final float EXPLOSION_VOLUME = 0.5f;
+
 
 }

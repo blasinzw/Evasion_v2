@@ -1,6 +1,7 @@
 package evasion.assets;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import evasion.game.Evasion;
@@ -23,5 +24,9 @@ public class Assets {
         manager.load("images/ui/font.png", Texture.class);
         manager.load("images/ui/ui.pack", TextureAtlas.class);
         manager.load("images/mine/mine.pack", TextureAtlas.class);
+
+        manager.load("sounds/laser.ogg", Sound.class);
+        manager.load("sounds/minePrime.ogg", Sound.class);
+        manager.load("sounds/explosion.ogg", Sound.class);
     }
 }

@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     public void show() {
         gameWorld = new GameWorld(game);
         gameRenderer = new GameRenderer(game, gameWorld);
+        Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(new InputHandler(gameWorld));
     }
 
@@ -64,7 +65,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setCursorCatched(false);
     }
 
     @Override

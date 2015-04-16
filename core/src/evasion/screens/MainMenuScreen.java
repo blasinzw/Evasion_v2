@@ -1,7 +1,6 @@
 package evasion.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,6 +25,7 @@ import evasion.game.Constants;
 import evasion.game.Evasion;
 import evasion.game.objects.Player;
 import evasion.utils.Difficulty;
+import evasion.utils.SaveData;
 
 public class MainMenuScreen implements Screen{
     private Evasion game;
@@ -61,9 +61,6 @@ public class MainMenuScreen implements Screen{
 
     //texture atlas
     private TextureAtlas textureAtlas;
-
-    //save data
-    private Preferences saveData = Gdx.app.getPreferences("saveData");
 
     //slider
     private Slider difficultySlider;
@@ -105,9 +102,9 @@ public class MainMenuScreen implements Screen{
 
         stateTime = 0;
 
-        difficulty = Difficulty.valueOf(saveData.getString("difficulty", "NORMAL"));
+        difficulty = SaveData.getDifficulty();
 
-        sensitivity = saveData.getFloat("sensitivity", .5f);
+        sensitivity = SaveData.getSensitivity();
 
         createAssetDependents = false;
         isOptionMenu = false;
@@ -273,7 +270,7 @@ public class MainMenuScreen implements Screen{
                 //sensitivity slider
                 sensitivity = sensitivitySlider.getValue();
                 sensitivityLabel.setText("Sensitivity for Tilting: " + String.valueOf((int) (sensitivity * 100)) + "%");
-                saveData.putFloat("sensitivity", sensitivity);
+                SaveData.setSensitivity(sensitivity);
 
                 if (java.lang.Math.round(difficultySlider.getValue()) == 0) {
                     difficulty = Difficulty.EASY;
@@ -285,13 +282,11 @@ public class MainMenuScreen implements Screen{
                     difficulty = Difficulty.HARD;
                     difficultyLabel.setText("HARD");
                 }
-                saveData.putString("difficulty", difficulty.toString());
+                SaveData.setDifficulty(difficulty);
             }
 
             eventDelay = stateTime;
         }
-
-        saveData.flush();
 
         player.update(delta);
         background.update(delta);

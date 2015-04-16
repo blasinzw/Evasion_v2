@@ -12,6 +12,7 @@ import evasion.game.Evasion;
 import evasion.utils.Collidable;
 import evasion.utils.CollisionType;
 import evasion.utils.DrawLevel;
+import evasion.utils.SoundEffect;
 
 import java.util.Random;
 
@@ -98,10 +99,11 @@ public class Mine extends GameObject implements Pool.Poolable {
                     break;
             }
         }
-        if (Intersector.overlaps(detectionBounds, collidable.getBounds())) {
+        if (Intersector.overlaps(detectionBounds, collidable.getBounds()) && !isPrimed()) {
             switch (collidable.getCollisionType()) {
                 case PLAYER:
                     setPrimed(true);
+                    SoundEffect.playMinePrime(game);
                     break;
                 case ASTEROID:
                     break;

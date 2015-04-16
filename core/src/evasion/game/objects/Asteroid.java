@@ -1,5 +1,6 @@
 package evasion.game.objects;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +11,7 @@ import evasion.game.GameWorld;
 import evasion.utils.Collidable;
 import evasion.utils.CollisionType;
 import evasion.utils.DrawLevel;
+import evasion.utils.SoundEffect;
 
 import java.util.Random;
 
@@ -158,16 +160,21 @@ public class Asteroid extends GameObject implements Pool.Poolable{
             switch (collidable.getCollisionType()) {
                 case PLAYER:
                     collidable.collide();
+                    SoundEffect.playExplosion(game);
                     break;
                 case ASTEROID:
                     collidable.setLiving(false);
                     break;
                 case MINE:
+                    setExploding(true);
+                    SoundEffect.playExplosion(game);
                     break;
                 case DROP:
                     break;
                 case LASER:
                     collidable.collide();
+                    SoundEffect.playExplosion(game);
+                    setExploding(true);
                     break;
             }
         }
