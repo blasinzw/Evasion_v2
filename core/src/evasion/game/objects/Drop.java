@@ -19,8 +19,6 @@ public class Drop extends GameObject implements Pool.Poolable {
 
     private DropType dropType;
 
-    private int speed;
-
     private TextureAtlas textureAtlasMoney;
     private Animation animation;
     private TextureRegion[] textureRegions;
@@ -31,7 +29,7 @@ public class Drop extends GameObject implements Pool.Poolable {
 
     private Rectangle bounds;
 
-    private boolean flip, addMoney;
+    private boolean flip;
 
     private float stateTime;
 
@@ -46,7 +44,6 @@ public class Drop extends GameObject implements Pool.Poolable {
         this.dropType = dropType;
         setAddedToCollidables(false);
         setLiving(true);
-        addMoney = false;
         load();
     }
 
@@ -79,7 +76,7 @@ public class Drop extends GameObject implements Pool.Poolable {
         if (Intersector.overlaps(collidable.getBounds(), bounds)) {
             switch (collidable.getCollisionType()) {
                 case PLAYER:
-                    if (dropType == DropType.MONEY) addMoney = true;
+                    if (dropType == DropType.MONEY) game.getGameScreen().getGameWorld().addMoney();
                     collide();
                     break;
                 case ASTEROID:
@@ -167,10 +164,6 @@ public class Drop extends GameObject implements Pool.Poolable {
 
     public void setAddedToCollidables(boolean addedToCollidables) {
         this.addedToCollidables = addedToCollidables;
-    }
-
-    public boolean AddMoney() {
-        return addMoney;
     }
 
 }

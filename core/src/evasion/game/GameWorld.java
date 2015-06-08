@@ -12,6 +12,7 @@ import evasion.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
 
 public class GameWorld {
@@ -57,7 +58,6 @@ public class GameWorld {
 
     //Difficulty
     private Difficulty difficulty;
-    private float globalSpawnModifier;
     private int globalSpeed;
 
     //spawn timer
@@ -80,7 +80,6 @@ public class GameWorld {
 
         //difficulty
         difficulty = SaveData.getDifficulty();
-        globalSpawnModifier = difficulty.getGlobalSpawnModifier();
         globalSpeed = difficulty.getGlobalSpeed();
 
         //HUD
@@ -252,71 +251,38 @@ public class GameWorld {
     }
 
     public void kill() {
-        for (int i=0; i<asteroids.size(); i++) {
-            Asteroid item = asteroids.get(i);
-            if (!item.isLiving()) {
-                asteroids.remove(i);
-                removeItemFromDrawables(item);
-                removeItemFromCollidables(item);
-                asteroidPool.free(item);
-            }
-        }
-
-        for (int i=0; i<lasers.size(); i++) {
-            Laser item = lasers.get(i);
-            if (!item.isLiving()) {
-                lasers.remove(i);
-                removeItemFromDrawables(item);
-                removeItemFromCollidables(item);
-                laserPool.free(item);
-            }
-        }
-
-        for (int i=0; i<drops.size(); i++) {
-            Drop item = drops.get(i);
-            if (!item.isLiving()) {
-                if (item.AddMoney()) addMoney(); //checks to see if the game adds to the money supply.
-                drops.remove(i);
-                removeItemFromDrawables(item);
-                removeItemFromCollidables(item);
-                dropPool.free(item);
-            }
-        }
-
-        for (int i=0; i<mines.size(); i++) {
-            Mine item = mines.get(i);
-            if (!item.isLiving()) {
-                mines.remove(item);
-                removeItemFromDrawables(item);
-                removeItemFromCollidables(item);
-                minePool.free(item);
-            }
-        }
-
-        for (int i=0; i<mineExplosions.size(); i++) {
-            MineExplosion item = mineExplosions.get(i);
-            if (!item.isLiving()) {
-                mineExplosions.remove(item);
-                removeItemFromDrawables(item);
-                removeItemFromCollidables(item);
-                mineExplosionPool.free(item);
-            }
-        }
+        removeItem(asteroids, asteroidPool);
+        removeItem(drops, dropPool);
+        removeItem(lasers, laserPool);
+        removeItem(mines, minePool);
+        removeItem(mineExplosions, mineExplosionPool);
     }
 
-    public void removeItemFromCollidables(Collidable item) {
-        for (int i=0; i<collidables.size(); i++) {
-            if (collidables.get(i).equals(item)) {
-                collidables.remove(i);
+    public <T extends GameDrawable & Collidable> void removeItem(ArrayList<T> list, Pool<T> pool) {
+        Iterator<T> itr = list.iterator();
+        while(itr.hasNext()) {
+            T item = itr.next();
+            if(!item.isLiving()) {
+                removeItemFromDrawables(item);
+                pool.free(item);
+                itr.remove();
             }
         }
+
+        Iterator<Collidable> itr1 = collidables.iterator();
+        while(itr1.hasNext()) {
+            if(!itr1.next().isLiving()) {
+                itr1.remove();
+            }
+        }
+
     }
 
     public void removeItemFromDrawables(GameDrawable item) {
-        for (int i=0; i<drawables.size(); i++) {
-            if (drawables.get(i).equals(item)) {
-                drawables.remove(i);
-            }
+        Iterator<GameDrawable> itr = drawables.iterator();
+
+        while(itr.hasNext()) {
+            if (itr.next().equals(item)) itr.remove();
         }
     }
 

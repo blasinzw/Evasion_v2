@@ -13,22 +13,11 @@ import evasion.utils.CollisionType;
 import evasion.utils.DrawLevel;
 import evasion.utils.SoundEffect;
 
-/**
- * Created by Zander on 1/30/2015.
- */
+
 public class Laser extends GameObject implements Pool.Poolable{
 
     private Sprite image;
     private Rectangle bounds;
-
-
-//    public Laser(Vector2 position, int speed, final Evasion game) {
-//        super (position, new Vector2(0, speed), DrawLevel.OBJECTS, game);
-//
-//        image = new Sprite(game.manager.get("images/player/laser.png", Texture.class));
-//        image.setScale(Constants.LASER_RESIZE);
-//        bounds = image.getBoundingRectangle();
-//    }
 
     public Laser(final Evasion game) {
         super(DrawLevel.OBJECTS, game);
@@ -50,7 +39,6 @@ public class Laser extends GameObject implements Pool.Poolable{
                 case PLAYER:
                     break;
                 case ASTEROID:
-                    collidable.collide();
                     setLiving(false);
                     break;
                 case MINE:

@@ -1,6 +1,5 @@
 package evasion.game.objects;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -160,6 +159,7 @@ public class Asteroid extends GameObject implements Pool.Poolable{
             switch (collidable.getCollisionType()) {
                 case PLAYER:
                     collidable.collide();
+                    collide();
                     SoundEffect.playExplosion(game);
                     break;
                 case ASTEROID:
@@ -173,6 +173,7 @@ public class Asteroid extends GameObject implements Pool.Poolable{
                     break;
                 case LASER:
                     collidable.collide();
+                    collide();
                     SoundEffect.playExplosion(game);
                     setExploding(true);
                     break;
