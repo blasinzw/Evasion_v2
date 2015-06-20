@@ -63,6 +63,7 @@ public class GameWorld {
     //spawn timer
     private SpawnTimer spawnTimer;
 
+    //player
     private Player player;
 
     public GameWorld(final Evasion game) {

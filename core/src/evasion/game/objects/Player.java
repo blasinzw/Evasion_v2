@@ -1,9 +1,6 @@
 package evasion.game.objects;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -30,14 +27,24 @@ public class Player extends GameObject{
     private Rectangle bounds;
     private Animation animation;
 
+    //death animation
+    private TextureAtlas explosionTextureAtlas;
+    private TextureRegion[] explosionTextures;
+    private Animation deathAnimation;
+    private Sprite explosionImage;
+    private boolean exploding;
+    private boolean updatedPos;
+    private float explosionTime;
+
     public Player(final Evasion game) {
         super(new Vector2(Constants.PLAYER_X, Constants.PLAYER_Y), new Vector2(0,0), DrawLevel.OBJECTS, game);
 
-        movingLeft = movingRight = false;
+        movingLeft = movingRight = exploding = updatedPos = false;
 
-        stateTime = 0f;
+        stateTime = explosionTime = 0f;
 
         load();
+        loadExplosions();
 
         bounds = new Rectangle(position.x, position.y, image.getRegionWidth()*2, image.getRegionHeight()*2);
     }
@@ -56,6 +63,20 @@ public class Player extends GameObject{
         }
         animation = new Animation(0.2F, playerForwardImages);
         image = animation.getKeyFrame(0f, true);
+    }
+
+    private void loadExplosions() {
+        explosionTextureAtlas = game.manager.get("images/asteroid/asteroidExplosions.pack", TextureAtlas.class);
+
+        explosionTextures = new TextureRegion[explosionTextureAtlas.findRegions("explosion").size];
+
+        for (int i=0; i<explosionTextureAtlas.findRegions("explosion").size; i++)  {
+            explosionTextures[i] = explosionTextureAtlas.findRegion("explosion", i+1);
+        }
+
+        deathAnimation = new Animation(0.03f, explosionTextures);
+
+        explosionImage = new Sprite(deathAnimation.getKeyFrame(0f, false));
 
     }
 
@@ -69,12 +90,22 @@ public class Player extends GameObject{
 
     @Override
     public void update(float delta) {
-        move(delta);
-
-        checkBounds(delta);
-
         stateTime += delta;
-        image = animation.getKeyFrame(stateTime, true);
+
+        if (exploding) {
+            updatedPos = true;
+            explosionTime += delta;
+            explosionImage = new Sprite(deathAnimation.getKeyFrame(explosionTime, false));
+            bounds = explosionImage.getBoundingRectangle();
+            explosionImage.setPosition(position.x - bounds.getWidth()/2, position.y - bounds.getHeight()/2);
+            bounds.setPosition(position.x - bounds.getWidth()/2, position.y - bounds.getHeight()/2);
+
+            if (deathAnimation.isAnimationFinished(explosionTime)) setLiving(false);
+        }else {
+            move(delta);
+            checkBounds(delta);
+            image = animation.getKeyFrame(stateTime, true);
+        }
     }
 
     /**
@@ -85,34 +116,24 @@ public class Player extends GameObject{
         if (movingLeft) {
             velocity.x = -speed;
             animation = new Animation(0.2f, playerLeftImages);
-        }else if (movingRight) {
+        } else if (movingRight) {
             velocity.x = speed;
             animation = new Animation(0.2f, playerRightImages);
-        }else {
+        } else {
             velocity.x = 0;
             animation = new Animation(0.2f, playerForwardImages);
         }
 
         //  velocity.scl(delta) accounts for time.
         position.add(velocity.scl(delta));
-        velocity.scl(1/delta); //unscales velocity vector
+        velocity.scl(1 / delta); //unscales velocity vector
         bounds.setPosition(position);
     }
-
-    /**
-     * Moves player
-     * @param delta
-     */
-    private void moveRaw(float delta) {
-        position.add(velocity.scl(delta));
-        velocity.scl(1/delta); //unscales velocity vector
-        bounds.setPosition(position);
-    }
-
 
     @Override
     public void draw(Batch batch) {
-        batch.draw(image, position.x, position.y, image.getRegionWidth()*2, image.getRegionHeight()*2);
+        if (!exploding) batch.draw(image, position.x, position.y, image.getRegionWidth()*2, image.getRegionHeight()*2);
+        else if(updatedPos) explosionImage.draw(batch);
     }
 
     @Override
@@ -131,7 +152,7 @@ public class Player extends GameObject{
 
     @Override
     public void collide() {
-        setLiving(false);
+        setExploding(true);
     }
 
     @Override
@@ -153,5 +174,9 @@ public class Player extends GameObject{
     public void setMovingRight(boolean movingRight) {
         if (movingLeft && movingRight) movingLeft = false;
         this.movingRight = movingRight;
+    }
+
+    public void setExploding(boolean exploding) {
+        this.exploding = exploding;
     }
 }
