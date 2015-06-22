@@ -84,7 +84,8 @@ public class Player extends GameObject{
         if (position.x < 0 || position.x + bounds.getWidth() > Constants.VIRTUAL_WIDTH) {
             setMovingLeft(false);
             setMovingRight(false);
-            move(delta);
+
+            position.set(position.x < 0 ? 0 : Constants.VIRTUAL_WIDTH-bounds.getWidth(), position.y);
         }
     }
 
