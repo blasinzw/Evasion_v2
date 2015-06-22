@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pool;
 import evasion.game.HUD.AmmunitionDisplay;
 import evasion.game.HUD.StaticAnimation;
 import evasion.game.objects.*;
+import evasion.input.AndroidInputHandler;
 import evasion.screens.Background;
 import evasion.utils.*;
 
@@ -152,6 +153,8 @@ public class GameWorld {
     public void update(float delta) {
         //spawn stuff
         spawn(delta);
+
+        AndroidInputHandler.checkForInput(this);
 
         //update money display and timer display
         moneyDisplay.setData(String.valueOf(moneySupply));

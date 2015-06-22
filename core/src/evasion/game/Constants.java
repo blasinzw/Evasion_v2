@@ -14,7 +14,7 @@ public class Constants {
 
     //BETA higher resolution
     public static final int VIRTUAL_WIDTH = 800; //800 or 480
-    public static final int VIRTUAL_HEIGHT = 960; //480 or 800
+    public static final int VIRTUAL_HEIGHT = 1280; //480 or 800
 
     //for HUD
     public static final int ENERGY_METER_X = VIRTUAL_WIDTH - 240;//560;
@@ -25,7 +25,6 @@ public class Constants {
     public static final int MONEY_ICON_Y = MONEY_DISPLAY_Y - 15;
     public static final int TIMER_DISPLAY_X = VIRTUAL_WIDTH/2;
     public static final int TIMER_DISPLAY_Y = VIRTUAL_HEIGHT - 25;
-
 
     //for laser
     public static final float LASER_RATE_OF_FIRE = 0.2f;
@@ -58,16 +57,18 @@ public class Constants {
     public static final int THRESHOLD_HIGH_YIELD = 20;
     public static final float LOW__YIELD_PERCENTAGE = 0.60f;
     public static final float MEDIUM_YIELD_PERCENTAGE = 0.30f;
-//    public static final float HIGH_YIELD_PERCENTAGE = 0.10f;
 
     //score
     public static final float TIME_MULTIPLIER = 1f;
     public static final float MONEY_MULTIPLIER = 2f;
 
     //for sound effects
-    public static final float LASER_VOLUME = 0.5f;
+    public static final float LASER_VOLUME = 0.25f;
     public static final float MINE_VOLUME = 0.25f;
     public static final float EXPLOSION_VOLUME = 0.5f;
 
+    //android/iOS input
+    public static final int MIN_ANGLE = 10;
+    public static final int MAX_ANGLE = 45;
 
 }

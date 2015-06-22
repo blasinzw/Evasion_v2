@@ -25,7 +25,6 @@ public class HighScoreScreen implements Screen{
     private Evasion game;
     private SpriteBatch batch;
     private Viewport viewport;
-    private Difficulty difficulty;
 
    //Textures for sliders
     private TextureAtlas textureAtlas;
@@ -78,8 +77,6 @@ public class HighScoreScreen implements Screen{
         //formula for score
         score = Constants.TIME_MULTIPLIER*time + Constants.MONEY_MULTIPLIER*money;
 
-        difficulty = SaveData.getDifficulty();
-
         loadSave();
         writeSave();
 
@@ -129,6 +126,8 @@ public class HighScoreScreen implements Screen{
 
         generalUpdates();
 
+        stage.draw();
+
         //drawing phase
         batch.setProjectionMatrix(camera.combined);
 
@@ -141,19 +140,16 @@ public class HighScoreScreen implements Screen{
 
 
         if (time < bestTime) {
-//            batch.draw(full, table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY(), 0, 0, (int) ((time/bestTime) * 300), 25);
             batch.draw(TextureCropper.cropTexture(full, (int) (time/bestTime * 300), full.getRegionHeight()), table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY());
         }else{
             batch.draw(full, table.getCell(timeLabel).getActorX() + table.getCell(timeLabel).getActorWidth() + 25, table.getCell(timeLabel).getActorY());
         }
         if (money < mostMoney) {
-//            batch.draw(full, table.getCell(moneyLabel).getActorX() + table.getCell(moneyLabel).getActorWidth() + 25, table.getCell(moneyLabel).getActorY(), 0, 0, (int) ((money/mostMoney) * 300), 25);
             batch.draw(TextureCropper.cropTexture(full, (int) (money/mostMoney * 300), full.getRegionHeight()), table.getCell(moneyLabel).getActorX() + table.getCell(moneyLabel).getActorWidth() + 25, table.getCell(moneyLabel).getActorY());
         }else{
             batch.draw(full, table.getCell(moneyLabel).getActorX() + table.getCell(moneyLabel).getActorWidth() + 25, table.getCell(moneyLabel).getActorY());
         }
         if (score < oldScore) {
-//            batch.draw(full, table.getCell(scoreLabel).getActorX() + table.getCell(scoreLabel).getActorWidth() + 25, table.getCell(scoreLabel).getActorY(), 0, 0, (int) ((score/oldScore) * 300), 25);
             batch.draw(TextureCropper.cropTexture(full, (int) (score/oldScore * 300), full.getRegionHeight()), table.getCell(scoreLabel).getActorX() + table.getCell(scoreLabel).getActorWidth() + 25, table.getCell(scoreLabel).getActorY());
         }else{
             batch.draw(full, table.getCell(scoreLabel).getActorX() + table.getCell(scoreLabel).getActorWidth() + 25, table.getCell(scoreLabel).getActorY());
@@ -161,8 +157,6 @@ public class HighScoreScreen implements Screen{
         }
 
         batch.end();
-
-        stage.draw();
 
     }
 

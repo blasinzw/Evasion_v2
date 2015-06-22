@@ -4,9 +4,6 @@ import com.badlogic.gdx.Input.*;
 import com.badlogic.gdx.InputProcessor;
 import evasion.game.GameWorld;
 
-/**
- * Created by Zander on 1/27/2015.
- */
 public class InputHandler implements InputProcessor {
 
     private final GameWorld world;
@@ -67,11 +64,13 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        world.setFiring(true);
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        world.setFiring(false);
         return false;
     }
 

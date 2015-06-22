@@ -179,4 +179,8 @@ public class Player extends GameObject{
     public void setExploding(boolean exploding) {
         this.exploding = exploding;
     }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
 }

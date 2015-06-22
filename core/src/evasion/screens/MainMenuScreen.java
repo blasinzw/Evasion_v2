@@ -58,6 +58,7 @@ public class MainMenuScreen implements Screen{
     private TextButton play;
     private TextButton exit;
     private TextButton optionMenu;
+    private TextButton mainMenu;
 
     //texture atlas
     private TextureAtlas textureAtlas;
@@ -138,13 +139,11 @@ public class MainMenuScreen implements Screen{
 
             //Shows main menu or option menu
             if (isOptionMenu) {
-                play.setVisible(false);
-                exit.setVisible(false);
+                table.setVisible(false);
                 optionsTable.setVisible(true);
                 stage.draw();
             }else{
-                play.setVisible(true);
-                exit.setVisible(true);
+                table.setVisible(true);
                 optionsTable.setVisible(false);
                 stage.draw();
             }
@@ -211,6 +210,7 @@ public class MainMenuScreen implements Screen{
         play = new TextButton("PLAY", style);
         exit = new TextButton("EXIT", style);
         optionMenu = new TextButton("OPTIONS", style);
+        mainMenu = new TextButton("RETURN", style);
 
         //for basic menu
         table.add(play);
@@ -235,7 +235,10 @@ public class MainMenuScreen implements Screen{
 
         optionsTable.add(sensitivityLabel).spaceBottom(10);
         optionsTable.row();
-        optionsTable.add(sensitivitySlider).width(300).spaceBottom(20);
+        optionsTable.add(sensitivitySlider).width(300).spaceBottom(100);
+        optionsTable.row();
+
+        optionsTable.add(mainMenu);
         optionsTable.row();
 
         stage.addActor(table);
@@ -250,20 +253,18 @@ public class MainMenuScreen implements Screen{
 
     private void generalUpdates(float delta) {
         //Delay for clicking
-        if (stateTime - eventDelay > .1F) {
+        if (stateTime - eventDelay > .1f) {
             //switches between option menu and main menu
             if (!isOptionMenu) {
-                optionMenu.setText("OPTIONS");
                 if (play.isPressed()) {
                     game.setScreen(game.getGameScreen());
                 }else if (exit.isPressed()) {
                     Gdx.app.exit();
-                }else if (optionMenu.isChecked() && !optionMenu.isPressed()) {
+                }else if (optionMenu.isPressed()) {
                     isOptionMenu = true;
                 }
             }else{
-                optionMenu.setText("RETURN");
-                if (!optionMenu.isChecked() && !optionMenu.isPressed()) {
+                if (mainMenu.isPressed()) {
                     isOptionMenu = false;
                 }
 
@@ -295,8 +296,6 @@ public class MainMenuScreen implements Screen{
     private void setGame(Evasion game) {
         this.game = game;
     }
-
-
 
     @Override
     public void resize(int width, int height) {
