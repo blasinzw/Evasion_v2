@@ -48,6 +48,10 @@ public class Constants {
 
     //for menu
     public static final int MENU_X_OFFSET = 0;
+    public static final int SLIDER_HEIGHT = 50;
+    public static final int KNOB_HEIGHT = SLIDER_HEIGHT + 5;
+    public static final int SLIDER_WIDTH_TO_HEIGHT_RATIO = 12;
+    public static final int SLIDER_WIDTH = SLIDER_HEIGHT * SLIDER_WIDTH_TO_HEIGHT_RATIO;
 
     //drops
     public static final float DROP_PERCENTAGE = 0.70f;

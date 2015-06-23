@@ -55,10 +55,7 @@ public class MainMenuScreen implements Screen{
     private Stage stage;
     private BitmapFont buttonFont;
     private TextButtonStyle style;
-    private TextButton play;
-    private TextButton exit;
-    private TextButton optionMenu;
-    private TextButton mainMenu;
+    private TextButton play, exit, optionMenu, mainMenu;
 
     //texture atlas
     private TextureAtlas textureAtlas;
@@ -188,6 +185,10 @@ public class MainMenuScreen implements Screen{
         sliderStyle.background = skin.getDrawable("sliderBackground");
         sliderStyle.knob = skin.getDrawable("knob");
 
+        //sets slider heights
+        sliderStyle.background.setMinHeight(Constants.SLIDER_HEIGHT);
+        sliderStyle.knob.setMinHeight(Constants.KNOB_HEIGHT);
+
         //setting up difficultySlider
         difficultyLabel = new Label("", labelStyle);
         difficultySlider = new Slider(0f, 2f, .05f, false, sliderStyle);
@@ -211,6 +212,7 @@ public class MainMenuScreen implements Screen{
         exit = new TextButton("EXIT", style);
         optionMenu = new TextButton("OPTIONS", style);
         mainMenu = new TextButton("RETURN", style);
+        //buttons for selecting landscape or portrait
 
         //for basic menu
         table.add(play);
@@ -230,12 +232,12 @@ public class MainMenuScreen implements Screen{
         //for options
         optionsTable.add(difficultyLabel).spaceBottom(10);
         optionsTable.row();
-        optionsTable.add(difficultySlider).width(300).spaceBottom(20);
+        optionsTable.add(difficultySlider).width(Constants.SLIDER_WIDTH).spaceBottom(50);
         optionsTable.row();
 
         optionsTable.add(sensitivityLabel).spaceBottom(10);
         optionsTable.row();
-        optionsTable.add(sensitivitySlider).width(300).spaceBottom(100);
+        optionsTable.add(sensitivitySlider).width(Constants.SLIDER_WIDTH).spaceBottom(100);
         optionsTable.row();
 
         optionsTable.add(mainMenu);
